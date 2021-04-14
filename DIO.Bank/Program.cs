@@ -12,32 +12,44 @@ namespace DIO.Bank
 
 			while (opcaoUsuario.ToUpper() != "X")
 			{
-				switch (opcaoUsuario)
-				{
-					case "1":
-						ListarContas();
-						break;
-					case "2":
-						InserirConta();
-						break;
-					case "3":
-						Transferir();
-						break;
-					case "4":
-						Sacar();
-						break;
-					case "5":
-						Depositar();
-						break;
-					case "C":
-						Console.Clear();
-						break;
+                try
+                {
+					switch (opcaoUsuario)
+					{
+						case "1":
+							ListarContas();
+							break;
+						case "2":
+							InserirConta();
+							break;
+						case "3":
+							Transferir();
+							break;
+						case "4":
+							Sacar();
+							break;
+						case "5":
+							Depositar();
+							break;
+						case "C":
+							Console.Clear();
+							break;
 
-					default:
-						throw new ArgumentOutOfRangeException();
+						default:
+							throw new ArgumentOutOfRangeException();
+					}
+                }
+				catch (Exception ex)
+				{
+					Console.WriteLine(string.Concat("Erro: ", ex.Message));
+				}
+                finally
+                {
+					opcaoUsuario = ObterOpcaoUsuario();
+
 				}
 
-				opcaoUsuario = ObterOpcaoUsuario();
+
 			}
 
 			Console.WriteLine("Obrigado por utilizar nossos serviços.");
@@ -70,7 +82,7 @@ namespace DIO.Bank
 		{
 			Console.Write("Digite o número da conta de origem: ");
 			int indiceContaOrigem = int.Parse(Console.ReadLine());
-
+			
 			Console.Write("Digite o número da conta de destino: ");
 			int indiceContaDestino = int.Parse(Console.ReadLine());
 
@@ -95,6 +107,12 @@ namespace DIO.Bank
 
 			Console.Write("Digite o crédito: ");
 			double entradaCredito = double.Parse(Console.ReadLine());
+
+			if (!Enum.IsDefined(typeof(TipoConta), entradaCredito))
+			{
+				throw new ArgumentException("Tipo inválido!");
+			}
+
 
 			Conta novaConta = new Conta(tipoConta: (TipoConta)entradaTipoConta,
 										saldo: entradaSaldo,
